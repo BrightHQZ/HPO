@@ -11,7 +11,7 @@ def printHelpInfor():
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hi:c:o:")
+        opts, args = getopt.getopt(argv, "hi:c:o:a:k:")
     except getopt.GetoptError as err:
         print(err)
         sys.exit(2)
@@ -26,6 +26,10 @@ def main(argv):
             colN = int(arg)
         elif opt == '-o':
             outFile = arg
+        elif opt == "-a":
+            appid = arg
+        elif opt == "-k":
+            appkey = arg
 
     if (inFile == "" and (os.path.exists(inFile) or os.path.exists(os.getcwd() + "/" +  inFile))):
         print("Error: Must set the inFile !")
@@ -48,9 +52,19 @@ def main(argv):
             line = f.readline().strip();
             if (len(line) > 1):
                 in_text = line.replace("\n","").split("\t");
-                #print(in_text);
-                in_text.append(translation.translate_text(in_text[colN - 1]));
-                w.write("\t".join(in_text) + "\n");
+                res = translation.translate_text(in_text[colN - 1], appid, appkey);
+                if (res == "e1"):
+                    print("Error: Application id is null!");
+                    break;
+                elif (res == "e2"):
+                    print("Error: Application key is null!");
+                    break;
+                elif (res == "e3"):
+                    print("Error: Translation text is empty!");
+                    continue;
+                else:
+                    in_text.append(res);
+                    w.write("\t".join(in_text) + "\n");
             else:
                 break;
         w.close(); 

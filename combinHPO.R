@@ -1,4 +1,30 @@
-setwd("~/Desktop/Projects/HPO")
+library(optparse)
+
+# 描述参数的解析方式
+option_list <- list(
+  make_option(c("-d", "--rootDir"), type = "character", default = FALSE,
+              action = "store", help = "The root dir for execution the program!"
+  ),
+  make_option(c("-i", "--appID"), type = "character", default = FALSE,
+              action = "store", help = "The application id in YouDao AI cloud!"
+  ),
+  make_option(c("-k", "--appKey"), type = "character", default = FALSE,
+              action = "store", help = "The application key in YouDao AI cloud!"
+  ),
+  # make_option(c("-h", "--help"), type = "logical", default = FALSE,
+  #             action = "store_TRUE", help = "This is Help!"
+  # )
+)
+
+# 解析参数
+opt = parse_args(OptionParser(option_list = option_list, usage = "This Script is a test for arguments!"))
+
+if (opt$rootDir == "" | appID == "" | appKey == "") {
+    print("")
+    quit()
+}
+
+setwd(opt$rootDir)
 
 print("Download hp.obo from http://purl.obolibrary.org/obo/hp.obo.\n");
 system("wget http://purl.obolibrary.org/obo/hp.obo");

@@ -5,11 +5,15 @@ import uuid
 
 youdao_url = 'https://openapi.youdao.com/api'   # 有道api地址
 
-def translate_text (translate_text = "", des = "es", src = "zh-CHS"):
+def translate_text (translate_text = "", des = "es", src = "zh-CHS", id = "", key = ""):
     # 需要翻译的文本 translate_text = "";
+    if (id == ""):
+        return "e1"
+    if (key == ""):
+        return "e2"
     # 当文本长度小于等于20时，取文本
     if (translate_text == ""): 
-        return "Error: Text is not empty!";
+        return "e3";
     elif (len(translate_text) <= 20):
         input_text = translate_text
     # 当文本长度大于20时，进行特殊处理
@@ -17,9 +21,9 @@ def translate_text (translate_text = "", des = "es", src = "zh-CHS"):
         input_text = translate_text[:10] + str(len(translate_text)) + translate_text[-10:]
     
     time_curtime = int(time.time())   # 秒级时间戳获取
-    app_id = ""   # 应用id
+    app_id = id   # 应用id
     uu_id = uuid.uuid4()   # 随机生成的uuid数，为了每次都生成一个不重复的数。
-    app_key = ""   # 应用密钥
+    app_key = key   # 应用密钥
 
     sign = hashlib.sha256((app_id + input_text + str(uu_id) + str(time_curtime) + app_key).encode('utf-8')).hexdigest()   # sign生成
 
