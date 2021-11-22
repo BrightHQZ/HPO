@@ -1,7 +1,8 @@
 # HPO
-    The project created for get HPO information and translated them from english to Chinese. In this script, 
-    the core tool is the AI cloud of YouDao to translation english to Chinese. So to application a account in 
-    YouDao AI cloud is necessary.  The url of AI cloud of YouDao is https://ai.youdao.com/#/
+    The project created for get HPO information and translated them from english to Chinese. 
+    In this script, the core tool is the AI cloud of YouDao to translation english to Chinese. 
+    So to application a account in YouDao AI cloud is necessary.  
+    The url of AI cloud of YouDao is https://ai.youdao.com/#/
 
 # Run command
     Rscript combinHPO.R -d rootDir -i appID -k appKey
