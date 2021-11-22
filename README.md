@@ -9,7 +9,7 @@
     rootDir: Absolute path of target dir.
     appID, appKey: They are two string and obtained from AI cloud of YouDao after application translation servers.
 
-# Depend patch
+# Dependence
     The R package of "optparse" and "ontologyIndex" were need. 
     Using the command of "install.packages(c("optparse","ontologyIndex"))" to install in R.
 
