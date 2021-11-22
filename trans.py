@@ -17,9 +17,9 @@ def translate_text (translate_text = "", des = "es", src = "zh-CHS"):
         input_text = translate_text[:10] + str(len(translate_text)) + translate_text[-10:]
     
     time_curtime = int(time.time())   # 秒级时间戳获取
-    app_id = "063f36e63834be59"   # 应用id
+    app_id = ""   # 应用id
     uu_id = uuid.uuid4()   # 随机生成的uuid数，为了每次都生成一个不重复的数。
-    app_key = "Tjonkv5lsXg9Oh8ZiSg1dG61drO6SY2E"   # 应用密钥
+    app_key = ""   # 应用密钥
 
     sign = hashlib.sha256((app_id + input_text + str(uu_id) + str(time_curtime) + app_key).encode('utf-8')).hexdigest()   # sign生成
 
