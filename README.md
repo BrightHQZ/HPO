@@ -5,9 +5,11 @@
     The url of AI cloud of YouDao is https://ai.youdao.com/#/
 
 # Run command
-    Rscript combinHPO.R -d rootDir -i appID -k appKey
+    Rscript combinHPO.R -d rootDir -i appID -k appKey -p xxxx -s T
     rootDir: Absolute path of target dir.
     appID, appKey: They are two string and obtained from AI cloud of YouDao after application translation servers.
+    xxxx: This is a path which contain transEn.py
+    -s: Skip download file if the value is "T". Default value is "F"  
 
 # Dependence
     The R package of "optparse" and "ontologyIndex" were need. 
