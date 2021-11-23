@@ -1,7 +1,8 @@
 library(optparse)
 
 helpF <- function() {
-  print("The run command is: Rscript combinHPO -d xxx -i xxx -k xxx -p xxxx -s T")
+  print("The run command is: Rscript combinHPO -d xxx -i xxx -k xxx -p xxxx -s T");
+  print("The parameter -d -i -k and -p were necessary!");
 }
 # 描述参数的解析方式
 option_list <- list(
@@ -24,7 +25,6 @@ option_list <- list(
 opt = parse_args(OptionParser(option_list = option_list, usage = "This Script is a test for arguments!"))
 
 if (opt$rootDir == "" || opt$appID == "" || opt$appKey == "" || opt$python == "") {
-    print("The parameter -d -i -k and -p were necessary!");
     helpF();
     quit()
 }
