@@ -68,6 +68,7 @@ print("Translation hpo in English to Chinese.");
 print(paste("python ", opt$python, " -i ", opt$rootDir,"/hp.txt -c 2 -o ", opt$rootDir, "/hp_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""))
 system(paste("python", opt$python, "-i hp.txt -c 2 -o hp_T.txt -a", opt$appID, "-k", opt$appKey, sep = " "));
 print("Translation disease in English to Chinese.");
+print(paste("python ", opt$python,  " -i ", opt$rootDir, "/unique_disease.txt -c 2 -o ", opt$rootDir, "/unique_disease_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
 system(paste("python ", opt$python,  " -i ", opt$rootDir, "/unique_disease.txt -c 2 -o ", opt$rootDir, "/unique_disease_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
 
 print("Preparing combine HPO information!")
