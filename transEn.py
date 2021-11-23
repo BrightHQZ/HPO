@@ -31,20 +31,15 @@ def main(argv):
         elif opt == "-k":
             appkey = arg 
 
-    if (inFile == "" and (os.path.exists(inFile) or os.path.exists(os.getcwd() + "/" +  inFile))):
-        print("Error: Must set the inFile !")
+    if (inFile == "" or os.path.exists(inFile) == False):
+        print("Error: Must set the inFile or file (" + inFile + ") is not exist!")
         sys.exit(2);
-    if (outFile == "" and (os.path.exists(outFile) or os.path.exists(os.getcwd() + "/" +  outFile))):
+    if (outFile == ""):
         print("Error: Must set the outFile !")
         sys.exit(2);
     if (colN < 1):
         print("Error: The col number for translate must be provided !")
         sys.exit(2);
-
-    if (os.path.exists(inFile) == False):
-        inFile = os.getcwd() + "/" +  inFile;
-    if (os.path.exists(outFile) == False):
-        outFile = os.getcwd() + "/" +  outFile;
 
     with open(inFile, 'r') as f:
         w = open(outFile, 'w');
@@ -64,7 +59,7 @@ def main(argv):
                     continue;
                 else:
                     in_text.append(res);
-                    w.write("\t".join(in_text) + "\n");
+                    w.write(("\t".join(in_text) + "\n").encode('utf-8'));
             else:
                 break;
         w.close(); 

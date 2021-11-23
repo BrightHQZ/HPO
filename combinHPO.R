@@ -58,9 +58,11 @@ library(ontologyIndex)
 hpo <- get_ontology("hp.obo")
 hpoList <- data.frame(hpoID = hpo$id, hpoName = hpo$name)
 write.table(hpoList, "hp.txt", sep = "\t", quote = F, row.names = F, col.names = F)
+print("hp.txt created ......")
 
 disease <- read.delim2("phenotype.hpoa", comment.char = "#", header = F);
 write.table(unique(disease[,1:2]), "unique_disease.txt", sep = "\t", quote = F, row.names = F, col.names = F);
+print("unique_disease.txt created ......")
 
 print("Translation hpo in English to Chinese.");
 print(paste("python ", opt$python, " -i ", opt$rootDir,"/hp.txt -c 2 -o ", opt$rootDir, "/hp_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""))
