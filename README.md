@@ -4,7 +4,7 @@
     So to application a account in YouDao AI cloud is necessary.  
     The url of AI cloud of YouDao is https://ai.youdao.com/#/
 
-# Run command
+# Run
     Rscript combinHPO.R -d rootDir -i appID -k appKey -p xxxx -s T
     rootDir: Absolute path of target dir.
     appID, appKey: They are two string and obtained from AI cloud of YouDao after application translation servers.
