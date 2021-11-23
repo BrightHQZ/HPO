@@ -1,16 +1,13 @@
 library(optparse)
 
+helpF <- function() {
+  print("The run command is: Rscript combinHPO -d xxx -i xxx -k xxx")
+}
 # 描述参数的解析方式
 option_list <- list(
-  make_option(c("-d", "--rootDir"), type = "character", default = FALSE,
-              action = "store", help = "The root dir for execution the program!"
-  ),
-  make_option(c("-i", "--appID"), type = "character", default = FALSE,
-              action = "store", help = "The application id in YouDao AI cloud!"
-  ),
-  make_option(c("-k", "--appKey"), type = "character", default = FALSE,
-              action = "store", help = "The application key in YouDao AI cloud!"
-  ),
+  make_option(c("-d", "--rootDir"), type = "character", default = "", action = "store", help = "The root dir for execution the program!"),
+  make_option(c("-i", "--appID"), type = "character", default = "", action = "store", help = "The application id in YouDao AI cloud!"),
+  make_option(c("-k", "--appKey"), type = "character", default = "", action = "store", help = "The application key in YouDao AI cloud!")
   # make_option(c("-h", "--help"), type = "logical", default = FALSE,
   #             action = "store_TRUE", help = "This is Help!"
   # )
@@ -19,24 +16,34 @@ option_list <- list(
 # 解析参数
 opt = parse_args(OptionParser(option_list = option_list, usage = "This Script is a test for arguments!"))
 
-if (opt$rootDir == "" | appID == "" | appKey == "") {
-    print("")
+if (opt$rootDir == "" || opt$appID == "" || opt$appKey == "") {
+    print("The parameter -d -i and -k were necessary!");
+    helpF();
     quit()
 }
+
+if (! dir.exists(opt$rootDir)) dir.create(opt$rootDir);
 
 setwd(opt$rootDir)
 
 print("Download hp.obo from http://purl.obolibrary.org/obo/hp.obo.\n");
-system("wget http://purl.obolibrary.org/obo/hp.obo");
+system("wget http://purl.obolibrary.org/obo/hp.obo -O hp.obo");
 print("Download phenotype_to_genes.txt from http://purl.obolibrary.org/obo/hp/hpoa/phenotype_to_genes.txt.\n");
-system("wget http://purl.obolibrary.org/obo/hp/hpoa/phenotype_to_genes.txt");
+system("wget http://purl.obolibrary.org/obo/hp/hpoa/phenotype_to_genes.txt -O phenotype_to_genes.txt");
 print("Download phenotype.hpoa from http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa.\n");
-system("wget http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa");
+system("wget http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa -O phenotype.hpoa");
+
+if (!file.exists("hp.obo") || !file.exists("phenotype_to_genes.txt") || !file.exists("phenotype.hpoa") ||
+    file.size("hp.obo") < 1 || file.size("phenotype_to_genes.txt") < 1 || file.size("phenotype.hpoa") < 1) {
+  print("One or more of the files were not exist. Please check of the files of hp.obo, phenotype_to_genes.txt and phenotype.hpoa!");
+  quit();
+}
+
 
 library(ontologyIndex)
-hpo <- get_ontology("hpo.obo")
+hpo <- get_ontology("hp.obo")
 hpoList <- data.frame(hpoID = hpo$id, hpoName = hpo$name)
-write.table(hpoList, "hpo.txt", sep = "\t", quote = F, row.names = F, col.names = F)
+write.table(hpoList, "hp.txt", sep = "\t", quote = F, row.names = F, col.names = F)
 
 disease <- read.delim2("phenotype.hpoa", comment.char = "#", header = F);
 write.table(unique(disease[,1:2]), "unique_disease.txt", sep = "\t", quote = F, row.names = F, col.names = F);
