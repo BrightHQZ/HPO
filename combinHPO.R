@@ -1,7 +1,7 @@
 library(optparse)
 
 helpF <- function() {
-  print("The run command is: Rscript combinHPO -d xxx -i xxx -k xxx")
+  print("The run command is: Rscript combinHPO -d xxx -i xxx -k xxx -p xxxx -s T")
 }
 # 描述参数的解析方式
 option_list <- list(
