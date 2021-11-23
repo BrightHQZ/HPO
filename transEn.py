@@ -29,7 +29,7 @@ def main(argv):
         elif opt == "-a":
             appid = arg
         elif opt == "-k":
-            appkey = arg
+            appkey = arg 
 
     if (inFile == "" and (os.path.exists(inFile) or os.path.exists(os.getcwd() + "/" +  inFile))):
         print("Error: Must set the inFile !")
