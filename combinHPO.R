@@ -70,6 +70,7 @@ system(paste("python", opt$python, "-i hp.txt -c 2 -o hp_T.txt -a", opt$appID, "
 print("Translation disease in English to Chinese.");
 system(paste("python ", opt$python,  " -i ", opt$rootDir, "/unique_disease.txt -c 2 -o ", opt$rootDir, "/unique_disease_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
 
+print("Preparing combine HPO information!")
 disease_T <- read.delim2("unique_disease_T.txt", comment.char = "#", header = F);
 p_g <- read.delim2("phenotype_to_genes.txt", comment.char = "#", header = F);
 hpo_T <- read.delim2("hp_T.txt", comment.char = "#", header = F, quote = "");
@@ -86,3 +87,4 @@ colnames(combined) <- c("diseaseID","diseaseName","diseaseNameCN","gene","hpoID"
 "ref","evidenceCode","sex","subOntology","Qualifier")
 
 write.table(combined, "hpo_combined.tab", sep = "\t", quote = F, row.names = F)
+print(paste("HPO information has been combined and saved at: ", opt$rootDir, "/hpo_combined.tab !", sep = ""));
