@@ -13,7 +13,7 @@
 
 # Dependence
     The R package of "optparse" and "ontologyIndex" were need. 
-    Using the command of "install.packages(c("optparse","ontologyIndex"))" to install in R.
+    Using the command as following to install the two package in R: "install.packages(c("optparse","ontologyIndex"))" .
 
 
  
