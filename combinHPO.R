@@ -86,6 +86,12 @@ combined <- combined[,c(1,6,21,22,2,19,20,5,13,14,4,15,16,3,17,18,8:11,7)]
 colnames(combined) <- c("diseaseID","diseaseName","diseaseNameCN","gene","hpoID","hpoName","hpoNameCN","hpoOnsetID",
 "hpoOnsetName","hpoOnsetNameCN","hpoFreqID","hpoFreqName","hpoFreqCN","hpoTargetID","hpoTargetName","hpoTargetNameCN",
 "ref","evidenceCode","sex","subOntology","Qualifier")
+combined$hpoOnsetName[is.na(combined$hpoFreqName)] <- ""
+combined$hpoOnsetNameCN[is.na(combined$hpoOnsetNameCN)] <- ""
+combined$hpoFreqName[is.na(combined$hpoFreqName)] <- ""
+combined$hpoFreqCN[is.na(combined$hpoFreqCN)] <- ""
+combined$hpoTargetName[is.na(combined$hpoTargetName)] <- ""
+combined$hpoTargetNameCN[is.na(combined$hpoTargetNameCN)] <- ""
 
-write.table(combined, "hpo_combined.tab", sep = "\t", quote = F, row.names = F)
-print(paste("HPO information has been combined and saved at: ", opt$rootDir, "/hpo_combined.tab !", sep = ""));
+write.table(combined, "hpo_combined.txt", sep = "\t", quote = F, row.names = F)
+print(paste("HPO information has been combined and saved at: ", opt$rootDir, "/hpo_combined.txt !", sep = ""));

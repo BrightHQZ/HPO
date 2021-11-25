@@ -44,9 +44,9 @@ def main(argv):
     with open(inFile, 'r') as f:
         w = open(outFile, 'w');
         while (f):
-            line = f.readline().strip();
-            if (len(line) > 1):
-                in_text = line.replace("\n","").split("\t");
+            line = f.readline().strip().replace("\n","");
+            in_text = line.split("\t");
+            if (len(in_text) > 1):
                 res = translation.translate_text(in_text[colN - 1], appid, appkey);
                 if (res == "e1"):
                     print("Error: Application id is null!");
