@@ -35,5 +35,4 @@ def translate_text (translate_text = "", id = "", key = "", des = "es", src = "z
         'curtime':time_curtime,
     }
 
-    r = requests.get(youdao_url, params = data).json()
-    return(r["translation"][0])
+    return(requests.get(youdao_url, params = data).json());

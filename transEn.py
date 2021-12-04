@@ -42,11 +42,13 @@ def main(argv):
         sys.exit(2);
 
     with open(inFile, 'r') as f:
+        i = 0;
         w = open(outFile, 'w');
         while (f):
             line = f.readline().strip().replace("\n","");
             in_text = line.split("\t");
             if (len(in_text) > 1):
+                i = i + 1;
                 res = translation.translate_text(in_text[colN - 1], appid, appkey);
                 if (res == "e1"):
                     print("Error: Application id is null!");
@@ -58,8 +60,14 @@ def main(argv):
                     print("Error: Translation text is empty!");
                     continue;
                 else:
+                    while (res["errorCode"][0] != "0"):
+                        print(res["errorCode"][0])
+                        res = translation.translate_text(in_text[colN - 1], appid, appkey);
+                    res = res["errorCode"][0];
                     in_text.append(res);
-                    w.write(("\t".join(in_text) + "\n").encode('utf-8'));
+                    w.write(("\t".join(in_text) + "\n"));
+                    if (i % 200 == 0):
+                        print(i);
             else:
                 break;
         w.close(); 
