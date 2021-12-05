@@ -63,8 +63,7 @@ def main(argv):
                     while (res["errorCode"][0] != "0"):
                         print(res["errorCode"][0])
                         res = translation.translate_text(in_text[colN - 1], appid, appkey);
-                    res = res["errorCode"][0];
-                    in_text.append(res);
+                    in_text.append(res["translation"][0]);
                     w.write(("\t".join(in_text) + "\n"));
                     if (i % 200 == 0):
                         print(i);
