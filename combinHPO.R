@@ -55,9 +55,14 @@ if (!file.exists("hp.obo") || !file.exists("phenotype_to_genes.txt") || !file.ex
 
 
 library(ontologyIndex)
-hpo <- get_ontology("hp.obo")
+hpo <- get_ontology("hp.obo", extract_tags = "everything")
 hpoList <- data.frame(hpoID = hpo$id, hpoName = hpo$name)
 write.table(hpoList, "hp.txt", sep = "\t", quote = F, row.names = F, col.names = F)
+hpoList <- data.frame(hpoID = hpo$id, hpoComment = hpo$comment);
+write.table(hpoList[!is.na(hpoList$hpoComment),], "hp_comment.txt", sep = "\t", quote = F, row.names = F, col.names = F)
+hpoList <- data.frame(hpoID = hpo$id, hpoDef = hpo$def);
+hpoList$hpoDef <- gsub("\"|\\[HPO:probinson\\]|\\[HPO:curators\\]","",hpoList$hpoDef)
+write.table(hpoList[!is.na(hpoList$hpoDef),], "hp_def.txt", sep = "\t", quote = F, row.names = F, col.names = F)
 print("hp.txt created ......")
 
 disease <- read.delim2("phenotype.hpoa", comment.char = "#", header = F);
@@ -70,8 +75,8 @@ system(paste("python", opt$python, "-i hp.txt -c 2 -o hp_T.txt -a", opt$appID, "
 print("Translation disease in English to Chinese.");
 print(paste("python ", opt$python,  " -i ", opt$rootDir, "/unique_disease.txt -c 2 -o ", opt$rootDir, "/unique_disease_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
 system(paste("python ", opt$python,  " -i ", opt$rootDir, "/unique_disease.txt -c 2 -o ", opt$rootDir, "/unique_disease_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
-
 print("Preparing combine HPO information!")
+
 disease_T <- read.delim2("unique_disease_T.txt", comment.char = "#", header = F);
 p_g <- read.delim2("phenotype_to_genes.txt", comment.char = "#", header = F);
 hpo_T <- read.delim2("hp_T.txt", comment.char = "#", header = F, quote = "");
