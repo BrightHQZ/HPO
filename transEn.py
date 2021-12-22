@@ -60,11 +60,14 @@ def main(argv):
                     print("Error: Translation text is empty!");
                     continue;
                 else:
-                    while (res["errorCode"][0] != "0"):
-                        print(res["errorCode"][0])
+                    while (res["errorCode"] != "0"):
+                        if (res["errorCode"] == "412" or res["errorCode"] == "411"):
+                            print("System reject servers for frequence request! sleep 100 seconds, now!")
+                            time.sleep(100);
                         res = translation.translate_text(in_text[colN - 1], appid, appkey);
                     in_text.append(res["translation"][0]);
                     w.write(("\t".join(in_text) + "\n"));
+                    time.sleep(0.2);
                     if (i % 200 == 0):
                         print(i);
             else:

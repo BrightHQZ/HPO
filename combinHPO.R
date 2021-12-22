@@ -61,7 +61,7 @@ write.table(hpoList, "hp.txt", sep = "\t", quote = F, row.names = F, col.names =
 hpoList <- data.frame(hpoID = hpo$id, hpoComment = hpo$comment);
 write.table(hpoList[!is.na(hpoList$hpoComment),], "hp_comment.txt", sep = "\t", quote = F, row.names = F, col.names = F)
 hpoList <- data.frame(hpoID = hpo$id, hpoDef = hpo$def);
-hpoList$hpoDef <- gsub("\"|\\[HPO:probinson\\]|\\[HPO:curators\\]","",hpoList$hpoDef)
+hpoList$hpoDef <- gsub("\"","",hpoList$hpoDef)
 write.table(hpoList[!is.na(hpoList$hpoDef),], "hp_def.txt", sep = "\t", quote = F, row.names = F, col.names = F)
 print("hp.txt created ......")
 
@@ -69,34 +69,51 @@ disease <- read.delim2("phenotype.hpoa", comment.char = "#", header = F);
 write.table(unique(disease[,1:2]), "unique_disease.txt", sep = "\t", quote = F, row.names = F, col.names = F);
 print("unique_disease.txt created ......")
 
-print("Translation hpo in English to Chinese.");
+print("Translation hpo items from English to Chinese.");
 print(paste("python ", opt$python, " -i ", opt$rootDir,"/hp.txt -c 2 -o ", opt$rootDir, "/hp_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""))
 system(paste("python", opt$python, "-i hp.txt -c 2 -o hp_T.txt -a", opt$appID, "-k", opt$appKey, sep = " "));
-print("Translation disease in English to Chinese.");
+print("Translation disease name from English to Chinese.");
 print(paste("python ", opt$python,  " -i ", opt$rootDir, "/unique_disease.txt -c 2 -o ", opt$rootDir, "/unique_disease_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
 system(paste("python ", opt$python,  " -i ", opt$rootDir, "/unique_disease.txt -c 2 -o ", opt$rootDir, "/unique_disease_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
+print("Translation HPO def from English to Chinese .")
+print(paste("python ", opt$python, " -i ", opt$rootDir,"/hp_def.txt -c 2 -o ", opt$rootDir, "/hp_def_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""))
+system(paste("python", opt$python, "-i hp_def.txt -c 2 -o hp_def_T.txt -a", opt$appID, "-k", opt$appKey, sep = " "));
+print("Translation hpo comments from English to Chinese.");
+print(paste("python ", opt$python,  " -i ", opt$rootDir, "/hp_comment.txt -c 2 -o ", opt$rootDir, "/hp_comment_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
+system(paste("python ", opt$python,  " -i ", opt$rootDir, "/hp_comment.txt -c 2 -o ", opt$rootDir, "/hp_comment_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
 print("Preparing combine HPO information!")
+
+
 
 disease_T <- read.delim2("unique_disease_T.txt", comment.char = "#", header = F);
 p_g <- read.delim2("phenotype_to_genes.txt", comment.char = "#", header = F);
 hpo_T <- read.delim2("hp_T.txt", comment.char = "#", header = F, quote = "");
+hpo_def_T <- read.delim2("hp_def_T_combined.txt", comment.char = "#", header = F, quote = "");
+hpo_comment_T <- read.delim2("hp_comment_T.txt", comment.char = "#", header = F, quote = "");
 
 combined <- merge(disease, hpo_T, by.x = "V7", by.y = "V1", all.x = T);
 combined <- merge(combined, hpo_T, by.x = "V8", by.y = "V1", all.x = T);
 combined <- merge(combined, hpo_T, by.x = "V10", by.y = "V1", all.x = T);
 combined <- merge(combined, hpo_T, by.x = "V4", by.y = "V1", all.x = T);
 combined <- merge(combined, disease_T[,c(1,3)], by.x = "V1", by.y = "V1", all.x = T);
-combined <- merge(combined, p_g[,c(7,1,4)], by.x = c("V1","V4"), by.y = c("V7","V1"));
-combined <- combined[,c(1,6,21,22,2,19,20,5,13,14,4,15,16,3,17,18,8:11,7)]
+combined <- merge(combined, p_g[,c(7,1,4)], by.x = c("V1","V4"), by.y = c("V7","V1"), all.x = T);
+combined <- merge(combined, hpo_def_T, by.x = "V4", by.y = "V1", all.x = T);
+combined <- merge(combined, hpo_comment_T, by.x = "V4", by.y = "V1", all.x = T);
+
+combined <- combined[,c(2,6,21,22,1,19,20,5,13,14,4,15,16,3,17,18,8:11,7,23:26)]
 colnames(combined) <- c("diseaseID","diseaseName","diseaseNameCN","gene","hpoID","hpoName","hpoNameCN","hpoOnsetID",
 "hpoOnsetName","hpoOnsetNameCN","hpoFreqID","hpoFreqName","hpoFreqCN","hpoTargetID","hpoTargetName","hpoTargetNameCN",
-"ref","evidenceCode","sex","subOntology","Qualifier")
-combined$hpoOnsetName[is.na(combined$hpoFreqName)] <- ""
+"ref","evidenceCode","sex","subOntology","Qualifier","hpoDef","hpoDefCN","hpoComment","hpoCommentCN")
+combined$hpoOnsetName[is.na(combined$hpoOnsetName)] <- ""
 combined$hpoOnsetNameCN[is.na(combined$hpoOnsetNameCN)] <- ""
 combined$hpoFreqName[is.na(combined$hpoFreqName)] <- ""
 combined$hpoFreqCN[is.na(combined$hpoFreqCN)] <- ""
 combined$hpoTargetName[is.na(combined$hpoTargetName)] <- ""
 combined$hpoTargetNameCN[is.na(combined$hpoTargetNameCN)] <- ""
+combined$hpoDef[is.na(combined$hpoDef)] <- ""
+combined$hpoDefCN[is.na(combined$hpoDefCN)] <- ""
+combined$hpoComment[is.na(combined$hpoComment)] <- ""
+combined$hpoCommentCN[is.na(combined$hpoCommentCN)] <- ""
 
 write.table(combined, "hpo_combined.txt", sep = "\t", quote = F, row.names = F)
 print(paste("HPO information has been combined and saved at: ", opt$rootDir, "/hpo_combined.txt !", sep = ""));
