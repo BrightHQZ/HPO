@@ -83,8 +83,6 @@ print(paste("python ", opt$python,  " -i ", opt$rootDir, "/hp_comment.txt -c 2 -
 system(paste("python ", opt$python,  " -i ", opt$rootDir, "/hp_comment.txt -c 2 -o ", opt$rootDir, "/hp_comment_T.txt -a ", opt$appID, " -k ", opt$appKey, sep = ""));
 print("Preparing combine HPO information!")
 
-
-
 disease_T <- read.delim2("unique_disease_T.txt", comment.char = "#", header = F);
 p_g <- read.delim2("phenotype_to_genes.txt", comment.char = "#", header = F);
 hpo_T <- read.delim2("hp_T.txt", comment.char = "#", header = F, quote = "");
@@ -104,6 +102,7 @@ combined <- combined[,c(2,6,21,22,1,19,20,5,13,14,4,15,16,3,17,18,8:11,7,23:26)]
 colnames(combined) <- c("diseaseID","diseaseName","diseaseNameCN","gene","hpoID","hpoName","hpoNameCN","hpoOnsetID",
 "hpoOnsetName","hpoOnsetNameCN","hpoFreqID","hpoFreqName","hpoFreqCN","hpoTargetID","hpoTargetName","hpoTargetNameCN",
 "ref","evidenceCode","sex","subOntology","Qualifier","hpoDef","hpoDefCN","hpoComment","hpoCommentCN")
+combined$gene[is.na(combined$gene)] <- ""
 combined$hpoOnsetName[is.na(combined$hpoOnsetName)] <- ""
 combined$hpoOnsetNameCN[is.na(combined$hpoOnsetNameCN)] <- ""
 combined$hpoFreqName[is.na(combined$hpoFreqName)] <- ""
@@ -116,6 +115,6 @@ combined$hpoComment[is.na(combined$hpoComment)] <- ""
 combined$hpoCommentCN[is.na(combined$hpoCommentCN)] <- ""
 
 write.table(combined, "hpo_combined.txt", sep = "\t", quote = F, row.names = F)
-write.table(combined[!is.na(combined$gene),], "hpo_combined_genes.txt", sep = "\t", quote = F, row.names = F)
+write.table(combined[combined$gene != "",], "hpo_combined_genes.txt", sep = "\t", quote = F, row.names = F)
 
 print(paste("HPO information has been combined and saved at: ", opt$rootDir, "/hpo_combined.txt !", sep = ""));
