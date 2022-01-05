@@ -114,7 +114,7 @@ combined$hpoDefCN[is.na(combined$hpoDefCN)] <- ""
 combined$hpoComment[is.na(combined$hpoComment)] <- ""
 combined$hpoCommentCN[is.na(combined$hpoCommentCN)] <- ""
 
-write.table(combined, "hpo_combined.txt", sep = "\t", quote = F, row.names = F)
-write.table(combined[combined$gene != "",], "hpo_combined_genes.txt", sep = "\t", quote = F, row.names = F)
+write.table(unique(combined), "hpo_combined.txt", sep = "\t", quote = F, row.names = F)
+write.table(unique(combined[combined$gene != "",]), "hpo_combined_genes.txt", sep = "\t", quote = F, row.names = F)
 
 print(paste("HPO information has been combined and saved at: ", opt$rootDir, "/hpo_combined.txt !", sep = ""));
